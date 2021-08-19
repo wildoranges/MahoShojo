@@ -8,6 +8,7 @@ Maho_Shojo compiler 欢迎来到魔法少女的世界~
   - [魔法少女使用指南](#魔法少女使用指南)
     - [flag说明:](#flag说明)
     - [优化说明](#优化说明)
+  - [工作进度与分工](#工作进度与分工)
 
 ## References
 竞赛所需资料
@@ -76,3 +77,7 @@ $ ./compiler [ -h | --help ] [ -p | --trace_parsing ] [ -s | --trace_scanning ] 
 7. 循环展开
 8. 循环不变外提
 9. 稀疏有条件常量传播（SCCP）
+
+## 工作进度与分工
+
+![](./media/1.PNG)
