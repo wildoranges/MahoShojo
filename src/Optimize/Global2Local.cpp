@@ -186,7 +186,7 @@ void Global2Local::localize(GlobalVariable *global, Function *func){
     }
     //delete useless phis
     std::set<PhiInst *> wait_for_delete;
-    while (false && !can_delete_phis.empty()){
+    while (!can_delete_phis.empty()){
         auto can_delete_phi = can_delete_phis.front();
         can_delete_phis.pop();
         Value *replace_val = nullptr;
