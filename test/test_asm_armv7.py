@@ -11,7 +11,7 @@ def eval(EXE_PATH, TEST_BASE_PATH, timeout):
     print('now in {}'.format(TEST_BASE_PATH))
     succ = True
     for case in testcases:
-        print('Case %s:' % case, end='')
+        print('\033[36mCase {} \033[0m:'.format(case), end='')
         TEST_PATH = TEST_BASE_PATH + case
         SY_PATH = TEST_BASE_PATH + case + '.sy'
         ASM_PATH = TEST_BASE_PATH + case + '.s'
@@ -27,7 +27,12 @@ def eval(EXE_PATH, TEST_BASE_PATH, timeout):
                     input_option = fin.read()
 
             try:
-                subprocess.run(ExeGen_ptn.format(TEST_PATH, ASM_PATH), shell=True, stderr=subprocess.PIPE, timeout=timeout)
+                res = subprocess.run(ExeGen_ptn.format(TEST_PATH, ASM_PATH), shell=True, stderr=subprocess.PIPE, timeout=timeout)
+                if res.returncode != 0:
+                    succ = False
+                    print(res.stderr.decode(), end='')
+                    print('\t\033[31mAssemblerExecute Fail\033[0m')
+                    continue
                 result = subprocess.run(Exe_ptn.format(TEST_PATH), shell=True, input=input_option, stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=timeout)
                 out = result.stdout.split(b'\n')
                 if result.returncode != b'':

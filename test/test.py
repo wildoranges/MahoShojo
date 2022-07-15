@@ -27,7 +27,12 @@ def eval(EXE_PATH, TEST_BASE_PATH, timeout, optimization):
                     input_option = fin.read()
 
             try:
-                subprocess.run(ExeGen_ptn.format(optimization, TEST_PATH, LL_PATH), shell=True, stderr=subprocess.PIPE)
+                res = subprocess.run(ExeGen_ptn.format(optimization, TEST_PATH, LL_PATH), shell=True, stderr=subprocess.PIPE)
+                if res.returncode != 0:
+                    succ = False
+                    print(res.stderr.decode(), end='')
+                    print('\t\033[31mClangExecute Fail\033[0m')
+                    continue
                 result = subprocess.run(Exe_ptn.format(TEST_PATH), shell=True, input=input_option, stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=timeout)
                 out = result.stdout.split(b'\n')
                 if result.returncode != b'':
@@ -42,7 +47,7 @@ def eval(EXE_PATH, TEST_BASE_PATH, timeout, optimization):
                         line = line.strip(b'\n')
                         if line == '':
                             continue
-                        if out[i] != line:
+                        if out[i].strip(b'\r') != line:
                             Success_flag = False
                             succ = False
                             print(result.stdout[:100], result.returncode, out[i][:100], line[:100], end='')
